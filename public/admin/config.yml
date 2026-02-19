@@ -1,0 +1,20 @@
+backend:
+  name: github
+  repo: richardsonalex997-del/ceeff-site
+  branch: main
+
+media_folder: "src/assets" # Новые картинки будут попадать сюда
+public_folder: "/assets"
+
+collections:
+  - name: "pages"
+    label: "Страницы"
+    files:
+      - label: "Главная страница"
+        name: "home"
+        file: "src/pages/Home.jsx" # Путь к файлу, который будем менять
+        fields:
+          - { label: "Главный заголовок", name: "hero_title", widget: "string" }
+          - { label: "Описание под заголовком", name: "hero_text", widget: "text" }
+          - { label: "Основной телефон", name: "phone", widget: "string" }
+          - { label: "Главное фото", name: "hero_image", widget: "image" }
