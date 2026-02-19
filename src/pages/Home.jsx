@@ -1,3 +1,8 @@
+---
+hero_title: "Испытания, диагностика и наладка электрооборудования до 110 кВ"
+hero_subtitle: "Выполняем полный комплекс пусконаладочных работ под ключ на подстанциях. Выдаем технические отчеты для Ростехнадзора за 24 часа."
+hero_button: "Рассчитать стоимость"
+---
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';

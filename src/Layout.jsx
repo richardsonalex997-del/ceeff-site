@@ -63,6 +63,23 @@ export default function Layout({ children, currentPageName }) {
         gtagScript.src = 'https://www.googletagmanager.com/gtag/js?id=G-XDQF3TRKHM';
         document.head.appendChild(gtagScript);
 
+        const ymScript = document.createElement('script');
+        ymScript.innerHTML = `
+           (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+           m[i].l=1*new Date();
+           for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+           k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+           (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+        
+           ym(96338573, "init", {
+                clickmap:true,
+                trackLinks:true,
+                accurateTrackBounce:true,
+                webvisor:true
+           });
+        `;
+        document.head.appendChild(ymScript);
+
         const gtagInit = document.createElement('script');
         gtagInit.innerHTML = `
           window.dataLayer = window.dataLayer || [];
@@ -148,16 +165,16 @@ export default function Layout({ children, currentPageName }) {
                         {/* ... */}
                         {/* Просто убедитесь, что остальной код JSX внутри return остался тем же */}
                         <Link to={createPageUrl('Home')} className="flex items-center gap-3 group">
-                        <img 
-  src={logo} 
-  alt="ЦЭФ Логотип"
-  className="..." // здесь могут быть какие-то классы, их не трогайте
-/>
-                            <div className="leading-tight max-w-[200px]">
-                                <div className="font-bold text-slate-900 uppercase tracking-wide text-xs">ЦЭФ</div>
-                                <div className="text-[9px] text-slate-500 font-medium leading-tight">Лицензия №1428 Волжско-Окское управление РТН</div>
-                            </div>
-                        </Link>
+    <img 
+        src={logo} 
+        alt="ЦЭФ Логотип" 
+        className="h-10 w-auto object-contain" 
+    />
+    <div className="leading-tight max-w-[200px]">
+        <div className="font-bold text-slate-900 uppercase tracking-wide text-xs">ЦЭФ</div>
+        <div className="text-[9px] text-slate-500 font-medium leading-tight">Лицензия №1428 Волжско-Окское управление РТН</div>
+    </div>
+</Link>
                         {/* ... остальная навигация ... */}
                         <nav className="hidden xl:flex items-center gap-8 font-medium text-sm text-slate-600">
                             {navigation.map((item) => (
