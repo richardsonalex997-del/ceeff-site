@@ -1,6 +1,8 @@
 #env
 .env
 .env.*
+public/api/telegram-config.php
+public/admin/auth-config.php
 
 # Logs
 logs

@@ -1,155 +1,152 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import React from 'react';
+import { motion } from 'framer-motion';
+import { Building2, BadgeCheck, ArrowRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import * as helmetAsync from 'react-helmet-async';
 
-const projects = [
-    {
-        title: 'Нижегородское метро',
-        category: 'Электролаборатория',
-        description: 'Комплексные испытания электрооборудования метрополитена, проверка РЗА.',
-        images: [
-            'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69676445edfc54152453dadc/6090476b0_.jpg',
-            'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69676445edfc54152453dadc/5a942d7b3_IMG_20251216_105858.jpg'
-        ]
-    },
-    {
-        title: 'ЦОД Ростелеком',
-        category: 'Монтаж и наладка',
-        description: 'Монтаж систем электроснабжения, РЗА и АВР для центра обработки данных.',
-        images: [
-            'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69676445edfc54152453dadc/6517a73d2_IMG_20251216_122240.jpg',
-            'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69676445edfc54152453dadc/d49d6c8a1_IMG_20251216_122226.jpg',
-            'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69676445edfc54152453dadc/6f98366ae_IMG_20251113_141930.jpg',
-            'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69676445edfc54152453dadc/9417566bc_IMG_20251113_135237.jpg'
-        ]
-    },
-    {
-        title: 'Школа Кванториум',
-        category: 'Электромонтаж',
-        description: 'Проектирование и монтаж систем электроснабжения образовательного комплекса.',
-        images: [
-            'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69676445edfc54152453dadc/b001938ea_IMG_20250924_105112.jpg',
-            'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69676445edfc54152453dadc/98b3da661_IMG_20250924_105329.jpg',
-            'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69676445edfc54152453dadc/63107393f_IMG_20250924_105527.jpg'
-        ]
-    },
-    {
-        title: 'Электролаборатория',
-        category: 'Оборудование',
-        description: 'Оснащение собственной аккредитованной электролаборатории современным оборудованием.',
-        images: [
-            'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69676445edfc54152453dadc/c1e18e39f_IMG_20250411_125626.jpg',
-            'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69676445edfc54152453dadc/6a12799f9_IMG_20250411_132202.jpg'
-        ]
-    },
-    {
-        title: 'Автозаводская ТЭЦ',
-        category: 'Реконструкция',
-        description: 'Модернизация РУ-110кВ, замена высоковольтного оборудования, испытания РЗА.',
-        images: [
-            'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69676445edfc54152453dadc/db56244d8_IMG_20241026_104820.jpg',
-            'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69676445edfc54152453dadc/63e9ce3d6_IMG_20241026_102627.jpg',
-            'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69676445edfc54152453dadc/b3990eb84_IMG_20241026_102425.jpg'
-        ]
-    },
-    {
-        title: 'Молниезащита КБО',
-        category: 'Молниезащита',
-        description: 'Монтаж системы молниезащиты и заземления, испытания молниезащиты.',
-        images: [
-            'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69676445edfc54152453dadc/8c7133c79_IMG_20251012_091656.jpg',
-            'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69676445edfc54152453dadc/d34c29919_IMG_20251012_091640.jpg',
-            'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69676445edfc54152453dadc/2ae236447_IMG_20251009_155738.jpg'
-        ]
-    }
-];
+import projectsContentFallback from '@/data/projectsContent';
+import useRuntimeContent from '@/hooks/use-runtime-content';
+import { createProjectUrl } from '@/lib/paths';
+
+const { Helmet } = helmetAsync.Helmet ? helmetAsync : helmetAsync.default;
 
 function ProjectCard({ project, index }) {
-    const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const previewImage = project.images?.[0];
 
-    const nextImage = (e) => {
-        e.stopPropagation();
-        setCurrentImageIndex((prev) => (prev + 1) % project.images.length);
-    };
+  return (
+    <motion.article
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ delay: index * 0.1 }}
+      className="group overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm transition-shadow hover:shadow-xl"
+    >
+      <Link to={createProjectUrl(project.slug)} className="block">
+        {previewImage && (
+          <img
+            src={previewImage}
+            className="h-64 w-full object-cover transition-transform duration-700 group-hover:scale-105"
+            alt={project.title}
+            loading={index === 0 ? 'eager' : 'lazy'}
+            decoding="async"
+            fetchpriority={index === 0 ? 'high' : 'auto'}
+          />
+        )}
+      </Link>
 
-    const prevImage = (e) => {
-        e.stopPropagation();
-        setCurrentImageIndex((prev) => (prev - 1 + project.images.length) % project.images.length);
-    };
-
-    return (
-        <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: index * 0.1 }}
-            className="group relative h-80 rounded-2xl overflow-hidden cursor-pointer"
+      <div className="p-6">
+        <span className="mb-3 inline-flex rounded-full bg-orange-50 px-3 py-1 text-xs font-bold uppercase text-orange-700">
+          {project.category}
+        </span>
+        <h2 className="mb-3 text-2xl font-bold text-slate-900">
+          <Link to={createProjectUrl(project.slug)} className="hover:text-orange-600">
+            {project.title}
+          </Link>
+        </h2>
+        <p className="mb-5 text-slate-600">{project.description}</p>
+        <Link
+          to={createProjectUrl(project.slug)}
+          className="inline-flex items-center gap-2 font-semibold text-orange-600 hover:text-orange-700"
         >
-            <AnimatePresence mode="wait">
-                <motion.img
-                    key={currentImageIndex}
-                    src={project.images[currentImageIndex]}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                    alt={project.title}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.3 }}
-                />
-            </AnimatePresence>
-
-            {project.images.length > 1 && (
-                <>
-                    <button
-                        onClick={prevImage}
-                        className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/80 hover:bg-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-10"
-                    >
-                        <ChevronLeft className="w-5 h-5 text-slate-900" />
-                    </button>
-                    <button
-                        onClick={nextImage}
-                        className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/80 hover:bg-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-10"
-                    >
-                        <ChevronRight className="w-5 h-5 text-slate-900" />
-                    </button>
-                    <div className="absolute bottom-2 left-0 right-0 flex justify-center gap-1.5 z-10">
-                        {project.images.map((_, idx) => (
-                            <div
-                                key={idx}
-                                className={`w-1.5 h-1.5 rounded-full transition-all ${
-                                    idx === currentImageIndex ? 'bg-white w-6' : 'bg-white/50'
-                                }`}
-                            />
-                        ))}
-                    </div>
-                </>
-            )}
-
-            <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent p-6 flex flex-col justify-end">
-                <span className="text-orange-500 font-bold text-xs uppercase mb-2">
-                    {project.category}
-                </span>
-                <h3 className="text-white font-bold text-xl mb-1">{project.title}</h3>
-                <p className="text-slate-300 text-sm opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300">
-                    {project.description}
-                </p>
-            </div>
-        </motion.div>
-    );
+          Смотреть проект
+          <ArrowRight className="h-4 w-4" />
+        </Link>
+      </div>
+    </motion.article>
+  );
 }
 
 export default function Projects() {
-    return (
-        <div className="min-h-screen bg-white">
-            <div className="container mx-auto px-4 py-16">
-                <h1 className="text-4xl font-bold text-center mb-12">Наши проекты</h1>
-                
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {projects.map((project, index) => (
-                        <ProjectCard key={index} project={project} index={index} />
-                    ))}
-                </div>
-            </div>
+  const content = useRuntimeContent('/data/projects.json', projectsContentFallback);
+  const projects = Array.isArray(content?.projects) ? content.projects : projectsContentFallback.projects;
+  const clients = Array.isArray(content?.clients) ? content.clients : projectsContentFallback.clients;
+  const featuredClient = content?.featuredClient || projectsContentFallback.featuredClient;
+
+  return (
+    <div className="min-h-screen bg-white">
+      <Helmet>
+        <title>Выполненные проекты электролаборатории | Примеры работ | ЦЭФ</title>
+        <meta
+          name="description"
+          content="Портфолио проектов ЦЭФ. Для каждого проекта доступна отдельная страница с описанием и фотогалереей."
+        />
+      </Helmet>
+
+      <div className="container mx-auto px-4 py-16">
+        <div className="mb-12 text-center">
+          <h1 className="mb-4 text-3xl font-bold sm:text-4xl">Наши проекты</h1>
+          <p className="mx-auto max-w-3xl text-base text-slate-600 sm:text-lg">
+            Для каждого проекта теперь есть отдельная страница с собственным URL, крупной
+            фотогалереей и кратким описанием выполненных работ.
+          </p>
         </div>
-    );
+
+        <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+          {projects.map((project, index) => (
+            <ProjectCard key={project.id || project.slug} project={project} index={index} />
+          ))}
+        </div>
+
+        <motion.section
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="mt-20"
+        >
+          <div className="rounded-[2rem] bg-gradient-to-br from-slate-950 via-slate-900 to-orange-950 p-6 text-white shadow-2xl sm:p-8 md:p-10">
+            <div className="grid items-start gap-8 lg:grid-cols-[1.1fr_1.4fr]">
+              <div>
+                <div className="inline-flex items-center gap-2 rounded-full border border-orange-400/30 bg-orange-500/10 px-4 py-1.5 text-sm font-semibold text-orange-300">
+                  <BadgeCheck className="h-4 w-4" />
+                  Нам доверяют
+                </div>
+                <h2 className="mt-5 text-2xl font-bold leading-tight sm:text-3xl md:text-4xl">
+                  Среди наших заказчиков и партнёров
+                </h2>
+                <p className="mt-4 leading-relaxed text-slate-300">
+                  Выполняем работы для крупных промышленных предприятий, городских структур,
+                  исследовательских центров и федеральных компаний.
+                </p>
+
+                <div className="mt-6 rounded-2xl border border-white/10 bg-white/5 p-5 backdrop-blur-sm">
+                  <div className="flex items-start gap-3">
+                    <div className="mt-1 flex h-11 w-11 items-center justify-center rounded-xl bg-orange-500 text-white">
+                      <Building2 className="h-5 w-5" />
+                    </div>
+                    <div>
+                      <div className="text-sm uppercase tracking-[0.2em] text-orange-300">
+                        {featuredClient.eyebrow}
+                      </div>
+                      <div className="mt-1 text-xl font-bold sm:text-2xl">{featuredClient.title}</div>
+                      <p className="mt-2 text-sm text-slate-300">{featuredClient.description}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+                {clients.map((client, index) => (
+                  <motion.div
+                    key={client}
+                    initial={{ opacity: 0, y: 12 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: index * 0.03 }}
+                    className={`rounded-2xl border px-4 py-4 text-sm font-medium leading-snug ${
+                      client === featuredClient.title
+                        ? 'border-orange-300 bg-orange-500 text-white shadow-lg shadow-orange-950/20 sm:col-span-2 xl:col-span-3'
+                        : 'border-white/10 bg-white/5 text-slate-100'
+                    }`}
+                  >
+                    {client}
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </motion.section>
+      </div>
+    </div>
+  );
 }

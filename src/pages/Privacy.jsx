@@ -1,8 +1,15 @@
 import React from 'react';
+import * as helmetAsync from 'react-helmet-async';
+
+const { Helmet } = helmetAsync.Helmet ? helmetAsync : helmetAsync.default;
 
 export default function Privacy() {
     return (
         <div className="min-h-screen bg-white py-16">
+            <Helmet>
+  <title>Политика конфиденциальности | Центр Энергоэффективности</title>
+  <meta name="description" content="Политика в отношении обработки персональных данных пользователей сайта ceeff.ru в соответствии с ФЗ-152." />
+</Helmet>
             <div className="container mx-auto px-4 max-w-4xl">
                 <h1 className="text-4xl font-bold mb-8">Политика в отношении обработки персональных данных</h1>
 

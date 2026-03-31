@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import { Calculator as CalcIcon, X, Zap, Building2, Cable, Wrench, ChevronRight, CheckCircle, Phone, RotateCcw } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { buildContactPrefillUrl } from '@/lib/contact-prefill';
 
 const services = [
     {
@@ -106,6 +107,23 @@ const colorClasses = {
     green: { bg: 'bg-green-500', light: 'bg-green-100', text: 'text-green-500', border: 'border-green-500' }
 };
 
+function formatParameterValue(param, value) {
+    if (value === undefined || value === null || value === '') {
+        return null;
+    }
+
+    if (param.type === 'select') {
+        const selectedOption = param.options.find((option) => option.value === value);
+        return selectedOption?.label || value;
+    }
+
+    const printableValue = Number.isFinite(value) && !Number.isInteger(value)
+        ? value.toFixed(1)
+        : value;
+
+    return param.unit ? `${printableValue} ${param.unit}` : String(printableValue);
+}
+
 export default function Calculator({ isOpen, onClose }) {
     const [step, setStep] = useState(1);
     const [selectedService, setSelectedService] = useState(null);
@@ -165,6 +183,22 @@ export default function Calculator({ isOpen, onClose }) {
     const formatPrice = (price) => {
         return new Intl.NumberFormat('ru-RU').format(price);
     };
+
+    const callbackUrl = selectedService
+        ? buildContactPrefillUrl({
+            subject: 'Заявка после расчета в калькуляторе',
+            message: [
+                'Здравствуйте! Хочу обсудить заявку после расчета стоимости.',
+                `Услуга: ${selectedService.title}`,
+                ...selectedService.params.map((param) => {
+                    const formattedValue = formatParameterValue(param, params[param.id]);
+
+                    return formattedValue ? `${param.label}: ${formattedValue}` : null;
+                }),
+                calculatedPrice ? `Предварительная стоимость: ${formatPrice(calculatedPrice)} ₽` : null,
+            ].filter(Boolean).join('\n'),
+        })
+        : '#';
 
     if (!isOpen) return null;
 
@@ -228,7 +262,7 @@ export default function Calculator({ isOpen, onClose }) {
                                     exit={{ opacity: 0, x: -20 }}
                                 >
                                     <h3 className="text-lg font-bold text-slate-900 mb-4">Выберите тип услуги</h3>
-                                    <div className="grid grid-cols-2 gap-4">
+                                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                                         {services.map((service) => {
                                             const colors = colorClasses[service.color];
                                             const isSelected = selectedService?.id === service.id;
@@ -380,7 +414,7 @@ export default function Calculator({ isOpen, onClose }) {
                                         </ul>
                                     </div>
 
-                                    <div className="flex gap-3">
+                                    <div className="flex flex-col gap-3 sm:flex-row">
                                         <Button 
                                             variant="outline" 
                                             onClick={resetCalculator}
@@ -389,9 +423,11 @@ export default function Calculator({ isOpen, onClose }) {
                                             <RotateCcw className="w-4 h-4 mr-2" />
                                             Новый расчёт
                                         </Button>
-                                        <Button className="flex-1 bg-orange-500 hover:bg-orange-600">
-                                            <Phone className="w-4 h-4 mr-2" />
-                                            Заказать звонок
+                                        <Button asChild className="flex-1 bg-orange-500 hover:bg-orange-600">
+                                            <Link to={callbackUrl} onClick={onClose}>
+                                                <Phone className="w-4 h-4 mr-2" />
+                                                Заказать звонок
+                                            </Link>
                                         </Button>
                                     </div>
                                 </motion.div>

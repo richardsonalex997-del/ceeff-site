@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { Phone, MessageCircle } from 'lucide-react';
+import { Phone } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 
 const faqs = [
@@ -101,10 +101,6 @@ export default function FAQSection() {
                             <Button className="bg-orange-500 hover:bg-orange-600">
                                 <Phone className="w-4 h-4 mr-2" />
                                 Позвонить
-                            </Button>
-                            <Button variant="outline" className="border-green-500 text-green-600 hover:bg-green-50">
-                                <MessageCircle className="w-4 h-4 mr-2" />
-                                WhatsApp
                             </Button>
                         </div>
                     </motion.div>

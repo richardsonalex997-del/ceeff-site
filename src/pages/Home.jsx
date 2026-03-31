@@ -1,117 +1,107 @@
----
-hero_title: "Испытания, диагностика и наладка электрооборудования до 110 кВ"
-hero_subtitle: "Выполняем полный комплекс пусконаладочных работ под ключ на подстанциях. Выдаем технические отчеты для Ростехнадзора за 24 часа."
-hero_button: "Рассчитать стоимость"
----
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { createPageUrl } from '@/utils';
 import { motion } from 'framer-motion';
-import { Zap, Settings, FileText, ArrowRight } from 'lucide-react';
-import HeroSection from '../components/home/HeroSection';
-import ReviewsSection from '../components/home/ReviewsSection';
+import { Zap, Settings, ArrowRight } from 'lucide-react';
+import * as helmetAsync from 'react-helmet-async';
 
-const directions = [
-    {
-        icon: Zap,
-        title: 'Электролаборатория до 110 кВ',
-        description: 'Испытания и диагностика электрооборудования. Наладка релейной защиты и автоматики. Официальные протоколы для Ростехнадзора.',
-        features: [
-            'Испытания оборудования до 110 кВ',
-            'Наладка РЗиА и тепловизионный контроль',
-            'Диагностика трансформаторов и кабелей',
-            'Протоколы испытаний за 24 часа'
-        ],
-        link: 'Services',
-        color: 'orange'
-    },
-    {
-        icon: Settings,
-        title: 'Обслуживание объектов энергетики',
-        description: 'Техническое обслуживание до 10 кВ. Капитальный ремонт электроустановок. Оперативное обслуживание и аварийные работы 24/7.',
-        features: [
-            'Плановое ТО по ПТЭЭП и ПУЭ',
-            'Капитальный ремонт оборудования',
-            'Оперативное обслуживание объектов',
-            'Аварийные бригады 24/7'
-        ],
-        link: 'Maintenance',
-        color: 'blue'
-    }
-];
+import HeroSection from '@/components/home/HeroSection';
+import ReviewsSection from '@/components/home/ReviewsSection';
+import useRuntimeContent from '@/hooks/use-runtime-content';
+import homeContentFallback from '@/data/homeContent';
+import { createPageUrl } from '@/utils';
+
+const { Helmet } = helmetAsync.Helmet ? helmetAsync : helmetAsync.default;
+
+const directionIcons = {
+  zap: Zap,
+  settings: Settings,
+};
 
 export default function Home() {
-    React.useEffect(() => {
-        document.title = "Электролаборатория и электромонтаж | ЦЭФ";
-        const metaDescription = document.querySelector('meta[name="description"]');
-        if (metaDescription) {
-            metaDescription.content = "Электролаборатория до 110 кВ с аттестацией Ростехнадзора №1428. Испытания, наладка РЗиА, обслуживание объектов энергетики.";
-        }
-    }, []);
+  const homeContent = useRuntimeContent('/data/home.json', homeContentFallback);
+  const directions = Array.isArray(homeContent?.directions)
+    ? homeContent.directions
+    : homeContentFallback.directions;
 
-    return (
-        <div>
-            <HeroSection />
-            
-            {/* Основные направления */}
-            <section className="container mx-auto px-4 py-20">
-                <div className="text-center mb-16">
-                    <h2 className="text-4xl font-bold mb-4">Основные направления</h2>
-                    <p className="text-xl text-slate-600 max-w-3xl mx-auto">
-                        Полный комплекс услуг электролаборатории с официальной аттестацией Ростехнадзора. 
-                        Работаем по всей России.
-                    </p>
-                </div>
+  return (
+    <div className="flex flex-col">
+      <Helmet>
+        <title>{homeContent.seoTitle || homeContentFallback.seoTitle}</title>
+        <meta
+          name="description"
+          content={homeContent.seoDescription || homeContentFallback.seoDescription}
+        />
+      </Helmet>
 
-                <div className="grid lg:grid-cols-2 gap-8">
-                    {directions.map((direction, index) => {
-                        const Icon = direction.icon;
-                        const colorClasses = {
-                            orange: 'bg-orange-50 text-orange-600 border-orange-200',
-                            blue: 'bg-blue-50 text-blue-600 border-blue-200',
-                            green: 'bg-green-50 text-green-600 border-green-200'
-                        };
-                        const hoverClasses = {
-                            orange: 'hover:border-orange-400',
-                            blue: 'hover:border-blue-400',
-                            green: 'hover:border-green-400'
-                        };
+      <HeroSection data={homeContent} />
 
-                        return (
-                            <motion.div
-                                key={index}
-                                initial={{ opacity: 0, y: 20 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }}
-                                transition={{ delay: index * 0.1 }}
-                                className={`bg-white rounded-2xl border-2 ${hoverClasses[direction.color]} transition-all hover:shadow-xl p-8 flex flex-col h-full group`}
-                            >
-                                <div className={`w-16 h-16 ${colorClasses[direction.color]} rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform`}>
-                                    <Icon className="w-8 h-8" />
-                                </div>
-                                
-                                <h3 className="text-2xl font-bold mb-4 text-slate-900">{direction.title}</h3>
-                                <p className="text-slate-600 mb-6">{direction.description}</p>
-                                
-                                <ul className="custom-list text-sm text-slate-600 mb-8 flex-grow">
-                                    {direction.features.map((feature, i) => (
-                                        <li key={i}>{feature}</li>
-                                    ))}
-                                </ul>
-                                
-                                <Link to={createPageUrl(direction.link)}>
-                                    <button className="w-full bg-slate-900 hover:bg-orange-600 text-white font-bold py-3 rounded-xl transition-all flex items-center justify-center gap-2">
-                                        Подробнее
-                                        <ArrowRight className="w-5 h-5" />
-                                    </button>
-                                </Link>
-                            </motion.div>
-                        );
-                    })}
-                </div>
-            </section>
-
-            <ReviewsSection />
+      <section className="defer-section container mx-auto px-4 py-16 sm:py-20">
+        <div className="mb-12 text-center sm:mb-16">
+          <h2 className="mb-4 text-3xl font-bold sm:text-4xl">
+            {homeContent.directions_title || homeContentFallback.directions_title}
+          </h2>
+          <p className="mx-auto max-w-3xl text-base text-slate-600 sm:text-xl">
+            {homeContent.directions_subtitle || homeContentFallback.directions_subtitle}
+          </p>
         </div>
-    );
+
+        <div className="grid gap-6 lg:grid-cols-2 lg:gap-8">
+          {directions.map((direction, index) => {
+            const Icon = directionIcons[direction.icon] || Zap;
+            const colorClasses = {
+              orange: 'border-orange-200 bg-orange-50 text-orange-600',
+              blue: 'border-blue-200 bg-blue-50 text-blue-600',
+              green: 'border-green-200 bg-green-50 text-green-600',
+            };
+            const hoverClasses = {
+              orange: 'hover:border-orange-400',
+              blue: 'hover:border-blue-400',
+              green: 'hover:border-green-400',
+            };
+
+            return (
+              <motion.div
+                key={direction.title}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                className={`group flex h-full flex-col rounded-2xl border-2 bg-white p-6 transition-all hover:shadow-xl sm:p-8 ${
+                  hoverClasses[direction.color] || hoverClasses.orange
+                }`}
+              >
+                <div
+                  className={`mb-6 flex h-16 w-16 items-center justify-center rounded-2xl border transition-transform group-hover:scale-110 ${
+                    colorClasses[direction.color] || colorClasses.orange
+                  }`}
+                >
+                  <Icon className="h-8 w-8" />
+                </div>
+
+                <h3 className="mb-4 text-xl font-bold text-slate-900 sm:text-2xl">
+                  {direction.title}
+                </h3>
+                <p className="mb-6 text-slate-600">{direction.description}</p>
+
+                <ul className="custom-list mb-8 flex-grow text-sm text-slate-600">
+                  {(direction.features || []).map((feature) => (
+                    <li key={feature}>{feature}</li>
+                  ))}
+                </ul>
+
+                <Link to={createPageUrl(direction.link || 'Services')}>
+                  <button className="flex w-full items-center justify-center gap-2 rounded-xl bg-slate-900 py-3 font-bold text-white transition-all hover:bg-orange-600">
+                    Подробнее
+                    <ArrowRight className="h-5 w-5" />
+                  </button>
+                </Link>
+              </motion.div>
+            );
+          })}
+        </div>
+      </section>
+
+      <ReviewsSection />
+    </div>
+  );
 }

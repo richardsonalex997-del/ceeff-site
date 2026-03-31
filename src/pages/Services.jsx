@@ -1,189 +1,154 @@
-import React, { useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Zap, Shield, Activity, Gauge, Cpu, Cloud } from 'lucide-react';
+import { Activity, Cloud, Cpu, Gauge, Shield, Zap } from 'lucide-react';
+import * as helmetAsync from 'react-helmet-async';
 
-const tabs = [
-    { id: 'high', name: 'Высоковольтные испытания', icon: Zap },
-    { id: 'rza', name: 'РЗиА', icon: Cpu },
-    { id: 'transformers', name: 'Трансформаторы', icon: Activity },
-    { id: 'low', name: 'До 1 кВ', icon: Gauge },
-    { id: 'lightning', name: 'Молниезащита', icon: Cloud },
-    { id: 'install', name: 'Монтаж', icon: Shield }
-];
+import servicesContentFallback from '@/data/servicesContent';
+import siteContentFallback from '@/data/siteContent';
+import useRuntimeContent from '@/hooks/use-runtime-content';
 
-const servicesData = {
-    high: {
-        title: 'Высоковольтные испытания (6-110 кВ)',
-        description: 'Полный комплекс испытаний электрооборудования высокого напряжения согласно ПТЭЭП и ГОСТ.',
-        services: [
-            { name: 'Испытание кабельных линий', detail: 'Бумажная изоляция, сшитый полиэтилен' },
-            { name: 'Испытание выключателей', detail: 'Масляные, вакуумные, элегазовые' },
-            { name: 'Испытание разъединителей', detail: 'До 110 кВ' },
-            { name: 'Испытание шин и шинопроводов', detail: 'Измерение сопротивления изоляции' },
-            { name: 'Проверка ОПН', detail: 'Ограничители перенапряжений' },
-            { name: 'Тангенс диэлектрических потерь', detail: 'Высоковольтные вводы, трансформаторы' }
-        ]
-    },
-    rza: {
-        title: 'Релейная защита и автоматика',
-        description: 'Наладка, проверка и расчет уставок устройств РЗиА. Новое включение и периодические проверки.',
-        services: [
-            { name: 'Расчет уставок РЗиА', detail: 'Для всех типов защит' },
-            { name: 'Наладка устройств', detail: 'Новое включение оборудования' },
-            { name: 'Проверка работоспособности', detail: 'Периодические испытания' },
-            { name: 'Снятие характеристик ТТ', detail: 'Проверка трансформаторов тока' },
-            { name: 'Проверка выключателей', detail: 'Времятоковые характеристики' },
-            { name: 'Монтаж и ТО РЗиА', detail: 'Установка и обслуживание' }
-        ]
-    },
-    transformers: {
-        title: 'Трансформаторы и масло',
-        description: 'Диагностика силовых трансформаторов до 110 кВ. Анализ трансформаторного масла.',
-        services: [
-            { name: 'Диагностика трансформаторов', detail: 'До 110 кВ' },
-            { name: 'Хроматографический анализ масла', detail: 'ГОСТ 6581-75' },
-            { name: 'Испытание масла', detail: 'Пробивное напряжение' },
-            { name: 'Тепловизионный контроль', detail: 'Обмотки и контакты' },
-            { name: 'Измерение сопротивления обмоток', detail: 'Постоянному току' },
-            { name: 'Проверка устройств РПН', detail: 'Регулирование под нагрузкой' }
-        ]
-    },
-    low: {
-        title: 'Низковольтное оборудование (до 1 кВ)',
-        description: 'Испытания электрооборудования до 1000 В. Измерение изоляции, заземления, петли фаза-ноль.',
-        services: [
-            { name: 'Сопротивление изоляции', detail: 'Кабелей, электродвигателей, щитов' },
-            { name: 'Проверка металлосвязи', detail: 'Непрерывность защитного проводника' },
-            { name: 'Испытание автоматов', detail: 'До 1000А' },
-            { name: 'Петля «фаза-ноль»', detail: 'Проверка срабатывания защиты' },
-            { name: 'Сопротивление заземления', detail: 'Контур заземления' },
-            { name: 'Проверка АКБ', detail: 'Аккумуляторные батареи' },
-            { name: 'Конденсаторные батареи', detail: 'Компенсация реактивной мощности' }
-        ]
-    },
-    lightning: {
-        title: 'Молниезащита и заземление',
-        description: 'Проверка систем молниезащиты и заземляющих устройств согласно РД 34.21.122-87 и СО 153-34.21.122-2003.',
-        services: [
-            { name: 'Измерение сопротивления грунта', detail: 'Удельное сопротивление' },
-            { name: 'Проверка контура заземления', detail: 'Сопротивление растеканию тока' },
-            { name: 'Испытание заземлителей', detail: 'Естественные и искусственные' },
-            { name: 'Проверка устройств молниезащиты', detail: 'Молниеприемники, токоотводы' },
-            { name: 'Тепловизионный контроль', detail: 'Контактных соединений' },
-            { name: 'Проверка уравнивания потенциалов', detail: 'ГОСТ Р 50571.10-96' }
-        ]
-    },
-    install: {
-        title: 'Монтажные работы под ключ',
-        description: 'Электромонтаж, реконструкция и модернизация электрооборудования. Ретрофит ячеек 6-10 кВ.',
-        services: [
-            { name: 'Ретрофит ячеек 6-10 кВ', detail: 'Замена выключателей на современные' },
-            { name: 'Монтаж АВР', detail: 'Автоматический ввод резерва' },
-            { name: 'Монтаж ЗДЗ', detail: 'Защита от замыканий на землю' },
-            { name: 'Монтаж РЗиА под ключ', detail: 'Полный цикл работ' },
-            { name: 'Системы телеуправления', detail: 'Диспетчеризация объектов' },
-            { name: 'Сборка и монтаж щитов', detail: 'До 1000В' }
-        ]
-    }
+const { Helmet } = helmetAsync.Helmet ? helmetAsync : helmetAsync.default;
+
+const tabIcons = {
+  activity: Activity,
+  cloud: Cloud,
+  cpu: Cpu,
+  gauge: Gauge,
+  shield: Shield,
+  zap: Zap,
 };
 
 export default function Services() {
-    const [activeTab, setActiveTab] = useState('high');
-    const currentData = servicesData[activeTab];
+  const servicesContent = useRuntimeContent('/data/services.json', servicesContentFallback);
+  const siteContent = useRuntimeContent('/data/site.json', siteContentFallback);
+  const tabs = Array.isArray(servicesContent?.tabs) && servicesContent.tabs.length > 0
+    ? servicesContent.tabs
+    : servicesContentFallback.tabs;
+  const sections = Array.isArray(servicesContent?.sections) && servicesContent.sections.length > 0
+    ? servicesContent.sections
+    : servicesContentFallback.sections;
+  const header = siteContent?.header || siteContentFallback.header;
+  const [activeTab, setActiveTab] = useState(tabs[0]?.id || 'high');
 
-    return (
-        <div className="min-h-screen bg-white">
-            {/* Hero */}
-            <section className="bg-gradient-to-r from-slate-900 to-slate-800 text-white py-20">
-                <div className="container mx-auto px-4">
-                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="max-w-4xl">
-                        <div className="inline-flex items-center gap-2 bg-orange-600/20 border border-orange-500/30 rounded-full px-4 py-1.5 mb-6">
-                            <Zap className="w-4 h-4 text-orange-400" />
-                            <span className="text-orange-400 text-sm font-bold">Свидетельство №1428</span>
-                        </div>
-                        <h1 className="text-5xl font-bold mb-6">Услуги электролаборатории</h1>
-                        <p className="text-xl text-slate-300">
-                            Полный спектр испытаний электрооборудования до 110 кВ. Аттестация Ростехнадзора. 
-                            Официальные протоколы за 24 часа.
-                        </p>
-                    </motion.div>
-                </div>
-            </section>
+  useEffect(() => {
+    if (!tabs.some((tab) => tab.id === activeTab)) {
+      setActiveTab(tabs[0]?.id || 'high');
+    }
+  }, [activeTab, tabs]);
 
-            {/* Вкладки */}
-            <section className="border-b sticky top-[73px] bg-white z-40 shadow-sm">
-                <div className="container mx-auto px-4">
-                    <div className="flex gap-2 overflow-x-auto py-4 scrollbar-hide">
-                        {tabs.map((tab) => {
-                            const Icon = tab.icon;
-                            return (
-                                <button
-                                    key={tab.id}
-                                    onClick={() => setActiveTab(tab.id)}
-                                    className={`flex items-center gap-2 px-4 py-2 rounded-lg font-bold whitespace-nowrap transition-all ${
-                                        activeTab === tab.id
-                                            ? 'bg-orange-600 text-white shadow-lg'
-                                            : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-                                    }`}
-                                >
-                                    <Icon className="w-4 h-4" />
-                                    {tab.name}
-                                </button>
-                            );
-                        })}
-                    </div>
-                </div>
-            </section>
+  const currentSection = useMemo(() => {
+    return sections.find((section) => section.id === activeTab) || sections[0] || null;
+  }, [activeTab, sections]);
 
-            {/* Контент */}
-            <section className="container mx-auto px-4 py-16">
-                <motion.div
-                    key={activeTab}
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.3 }}
-                >
-                    <div className="max-w-4xl">
-                        <h2 className="text-4xl font-bold mb-4">{currentData.title}</h2>
-                        <p className="text-xl text-slate-600 mb-12">{currentData.description}</p>
+  return (
+    <div className="min-h-screen overflow-x-hidden bg-white">
+      <Helmet>
+        <title>{servicesContent.seoTitle || servicesContentFallback.seoTitle}</title>
+        <meta
+          name="description"
+          content={servicesContent.seoDescription || servicesContentFallback.seoDescription}
+        />
+      </Helmet>
 
-                        <div className="grid md:grid-cols-2 gap-6">
-                            {currentData.services.map((service, index) => (
-                                <motion.div
-                                    key={index}
-                                    initial={{ opacity: 0, y: 20 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    transition={{ delay: index * 0.05 }}
-                                    className="bg-white border-2 border-slate-100 rounded-xl p-6 hover:border-orange-300 hover:shadow-lg transition-all"
-                                >
-                                    <div className="flex items-start gap-3">
-                                        <div className="w-2 h-2 rounded-full bg-orange-600 mt-2 shrink-0" />
-                                        <div>
-                                            <h3 className="font-bold text-slate-900 mb-1">{service.name}</h3>
-                                            <p className="text-sm text-slate-600">{service.detail}</p>
-                                        </div>
-                                    </div>
-                                </motion.div>
-                            ))}
-                        </div>
-                    </div>
-                </motion.div>
-            </section>
-
-            {/* CTA */}
-            <section className="bg-slate-50 py-16">
-                <div className="container mx-auto px-4 text-center">
-                    <h2 className="text-3xl font-bold mb-4">Нужна консультация по испытаниям?</h2>
-                    <p className="text-slate-600 mb-8 max-w-2xl mx-auto">
-                        Оставьте заявку, и наш инженер свяжется с вами для уточнения деталей и расчета стоимости.
-                    </p>
-                    <a href={`tel:+79302460077`}>
-                        <button className="bg-orange-600 hover:bg-orange-700 text-white px-10 py-4 rounded-xl font-bold text-lg transition-all shadow-lg">
-                            Позвонить: +7 (930) 246-00-77
-                        </button>
-                    </a>
-                </div>
-            </section>
+      <section className="bg-gradient-to-r from-slate-900 to-slate-800 py-20 text-white">
+        <div className="container mx-auto px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="max-w-4xl"
+          >
+            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-orange-500/30 bg-orange-600/20 px-4 py-1.5">
+              <Zap className="h-4 w-4 text-orange-400" />
+              <span className="text-sm font-bold text-orange-400">
+                {servicesContent.badgeLabel || servicesContentFallback.badgeLabel}
+              </span>
+            </div>
+            <h1 className="mb-6 text-4xl font-bold sm:text-5xl">
+              {servicesContent.pageTitle || servicesContentFallback.pageTitle}
+            </h1>
+            <p className="text-lg text-slate-300 sm:text-xl">
+              {servicesContent.pageSubtitle || servicesContentFallback.pageSubtitle}
+            </p>
+          </motion.div>
         </div>
-    );
+      </section>
+
+      <section className="sticky top-[73px] z-40 border-b bg-white shadow-sm">
+        <div className="container mx-auto px-4">
+          <div className="flex flex-wrap gap-2 py-4">
+            {tabs.map((tab) => {
+              const Icon = tabIcons[tab.icon] || Shield;
+
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`flex w-full items-center justify-center gap-2 rounded-lg px-4 py-2 font-bold transition-all sm:w-auto ${
+                    activeTab === tab.id
+                      ? 'bg-orange-600 text-white shadow-lg'
+                      : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                  }`}
+                >
+                  <Icon className="h-4 w-4" />
+                  {tab.name}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      <section className="container mx-auto px-4 py-16">
+        {currentSection && (
+          <motion.div
+            key={currentSection.id}
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <div className="max-w-4xl">
+              <h2 className="mb-4 text-3xl font-bold sm:text-4xl">{currentSection.title}</h2>
+              <p className="mb-12 text-lg text-slate-600">{currentSection.description}</p>
+
+              <div className="grid gap-6 md:grid-cols-2">
+                {(currentSection.services || []).map((service, index) => (
+                  <motion.div
+                    key={`${currentSection.id}-${service.name}-${index}`}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.05 }}
+                    className="rounded-xl border-2 border-slate-100 bg-white p-6 transition-all hover:border-orange-300 hover:shadow-lg"
+                  >
+                    <div className="flex items-start gap-3">
+                      <div className="mt-2 h-2 w-2 shrink-0 rounded-full bg-orange-600" />
+                      <div>
+                        <h3 className="mb-1 font-bold text-slate-900">{service.name}</h3>
+                        <p className="text-sm text-slate-600">{service.detail}</p>
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </section>
+
+      <section className="bg-slate-50 py-16">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="mb-4 text-3xl font-bold">
+            {servicesContent.ctaTitle || servicesContentFallback.ctaTitle}
+          </h2>
+          <p className="mx-auto mb-8 max-w-2xl text-slate-600">
+            {servicesContent.ctaText || servicesContentFallback.ctaText}
+          </p>
+          <a href={header.phoneHref}>
+            <button className="rounded-xl bg-orange-600 px-10 py-4 text-lg font-bold text-white shadow-lg transition-all hover:bg-orange-700">
+              {(servicesContent.ctaButtonLabel || servicesContentFallback.ctaButtonLabel)}: {header.phoneDisplay}
+            </button>
+          </a>
+        </div>
+      </section>
+    </div>
+  );
 }

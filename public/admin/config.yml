@@ -3,18 +3,20 @@ backend:
   repo: richardsonalex997-del/ceeff-site
   branch: main
 
-media_folder: "src/assets" # Новые картинки будут попадать сюда
+media_folder: "src/assets"
 public_folder: "/assets"
 
 collections:
-  - name: "pages"
-    label: "Страницы"
+  - name: "content"
+    label: "Контент"
     files:
-      - label: "Главная страница"
+      - label: "Главный экран"
         name: "home"
-        file: "src/pages/Home.jsx" # Путь к файлу, который будем менять
+        file: "src/data/home.json"
+        format: "json"
         fields:
-          - { label: "Главный заголовок", name: "hero_title", widget: "string" }
-          - { label: "Описание под заголовком", name: "hero_text", widget: "text" }
-          - { label: "Основной телефон", name: "phone", widget: "string" }
-          - { label: "Главное фото", name: "hero_image", widget: "image" }
+          - { label: "Бейдж", name: "hero_badge", widget: "string", required: false }
+          - { label: "Заголовок", name: "hero_title", widget: "string" }
+          - { label: "Выделенная часть", name: "hero_highlight", widget: "string" }
+          - { label: "Подзаголовок", name: "hero_subtitle", widget: "text" }
+          - { label: "Текст кнопки", name: "hero_button", widget: "string" }

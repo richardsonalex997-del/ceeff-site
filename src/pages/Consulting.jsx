@@ -1,169 +1,136 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { ClipboardCheck, FileText, Shield, TrendingUp } from 'lucide-react';
+import * as helmetAsync from 'react-helmet-async';
 import { Link } from 'react-router-dom';
+
+import consultingContentFallback from '@/data/consultingContent';
+import useRuntimeContent from '@/hooks/use-runtime-content';
 import { createPageUrl } from '@/utils';
-import { FileText, Calculator, ClipboardCheck, Shield, TrendingUp, Award } from 'lucide-react';
 
-const services = [
-    {
-        icon: FileText,
-        title: 'Аудит проектной документации на соответствие ПУЭ и ПТЭЭП',
-        description: 'Экспертная проверка проектов электроснабжения перед сдачей в Ростехнадзор или госэкспертизу. Выявление ошибок в однолинейных схемах, несоответствий требованиям ПУЭ, СП, ГОСТ. Анализ расчетов токов КЗ, выбора сечений кабелей, уставок защитных аппаратов. Предоставление письменного заключения эксперта с рекомендациями по доработке. Минимизация риска возврата проекта на доработку контролирующими органами.',
-        details: [
-            'Проверка проектов РУ-0,4–10 кВ, ТП, КТП на соответствие ПУЭ-7',
-            'Анализ однолинейных схем и расчетов токов короткого замыкания',
-            'Проверка выбора сечений кабелей и защитных аппаратов',
-            'Выявление нарушений требований ПТЭЭП и СП 256.1325800',
-            'Экспертное заключение с перечнем замечаний и рекомендациями'
-        ],
-        price: 'от 60 000 ₽'
-    },
-    {
-        icon: Shield,
-        title: 'Помощь в получении акта допуска в эксплуатацию от Ростехнадзора',
-        description: 'Комплексное сопровождение процедуры ввода в эксплуатацию электроустановок 6-10 кВ. Подготовка пакета документов для подачи в Ростехнадзор: технические отчеты, протоколы испытаний, акты наладки РЗиА, исполнительная документация. Проведение контрольных измерений и испытаний по программе приемо-сдаточных работ. Устранение замечаний инспектора на объекте. Получение акта допуска электроустановки в эксплуатацию в минимальные сроки.',
-        details: [
-            'Подготовка технической документации для подачи в РТН',
-            'Приемо-сдаточные испытания по полной программе ПТЭЭП',
-            'Оформление протоколов, актов наладки РЗиА и технического отчета',
-            'Сопровождение проверки инспектором Ростехнадзора на объекте',
-            'Получение официального акта допуска в эксплуатацию'
-        ],
-        price: 'от 60 000 ₽'
-    },
-    {
-        icon: TrendingUp,
-        title: 'Оптимизация затрат на электроэнергию и анализ тарифов',
-        description: 'Энергоаудит промышленных и коммерческих объектов с выявлением зон избыточного потребления и потерь электроэнергии. Анализ существующих договоров энергоснабжения, расчет оптимальной тарифной группы. Тепловизионное обследование для выявления перегревов оборудования. Рекомендации по внедрению систем компенсации реактивной мощности, замене устаревших энергоемких устройств. Расчет окупаемости мероприятий по энергосбережению.',
-        details: [
-            'Анализ структуры энергопотребления предприятия',
-            'Тепловизионная диагностика электрооборудования',
-            'Расчет технических потерь в кабельных линиях и трансформаторах',
-            'Оптимизация тарифов, выбор группы потребителей',
-            'Разработка плана мероприятий по снижению энергозатрат с ROI'
-        ],
-        price: 'от 35 000 ₽'
-    },
-    {
-        icon: ClipboardCheck,
-        title: 'Разработка однолинейных схем электроснабжения и регламентов обслуживания',
-        description: 'Разработка исполнительных однолинейных схем электроснабжения объекта с актуализацией после реконструкций и модернизаций. Подготовка паспортов электроустановок, инструкций по эксплуатации для оперативного и ремонтного персонала. Составление графиков планово-предупредительных ремонтов и технического обслуживания в соответствии с требованиями ПТЭЭП. Разработка внутренних регламентов безопасности при работе в электроустановках.',
-        details: [
-            'Однолинейные схемы электроснабжения в формате AutoCAD/DWG',
-            'Паспорта РУ-0,4–10 кВ, трансформаторов, кабельных линий',
-            'Инструкции по эксплуатации и охране труда для персонала',
-            'Графики ППР и регламенты технического обслуживания',
-            'Журналы учета, бланки нарядов-допусков, оперативные журналы'
-        ],
-        price: 'от 9 000 ₽'
-    }
-];
+const { Helmet } = helmetAsync.Helmet ? helmetAsync : helmetAsync.default;
 
-const advantages = [
-    { title: 'Экспертный опыт 14+ лет', description: 'Работаем с объектами всех уровней напряжения' },
-    { title: 'Знание нормативной базы', description: 'ПУЭ, ПТЭЭП, СП, ГОСТ в актуальных редакциях' },
-    { title: 'Практический подход', description: 'Решения для реальных производств, ТЦ, БЦ' },
-    { title: 'Гарантия результата', description: 'Устраняем замечания РТН за свой счет' }
-];
+const iconMap = {
+  'clipboard-check': ClipboardCheck,
+  'file-text': FileText,
+  shield: Shield,
+  'trending-up': TrendingUp,
+};
 
 export default function Consulting() {
-    return (
-        <div className="min-h-screen bg-white">
-            {/* Hero */}
-            <section className="bg-slate-900 text-white py-20">
-                <div className="container mx-auto px-4">
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        className="max-w-4xl"
-                    >
-                        <div className="inline-flex items-center gap-2 bg-green-600/20 border border-green-500/30 rounded-full px-4 py-1.5 mb-6">
-                            <FileText className="w-4 h-4 text-green-400" />
-                            <span className="text-green-400 text-sm font-bold">Консалтинг</span>
-                        </div>
-                        <h1 className="text-5xl font-bold mb-6">
-                            Консалтинг и техническая экспертиза <br />для объектов энергетики
-                        </h1>
-                        <p className="text-xl text-slate-300 mb-8">
-                            Помощь главным энергетикам, собственникам производств и управляющим компаниям в вопросах соответствия требованиям Ростехнадзора, оптимизации энергопотребления, подготовки проектной документации. Работаем с РУ, ТП, КТП до 110 кВ.
-                        </p>
-                        <Link to={createPageUrl('Contacts')}>
-                            <button className="bg-orange-600 hover:bg-orange-700 text-white px-8 py-4 rounded-xl font-bold text-lg transition-all">
-                                Получить консультацию
-                            </button>
-                        </Link>
-                    </motion.div>
-                </div>
-            </section>
+  const consultingContent = useRuntimeContent('/data/consulting.json', consultingContentFallback);
+  const services = Array.isArray(consultingContent?.services) ? consultingContent.services : consultingContentFallback.services;
+  const advantages = Array.isArray(consultingContent?.advantages)
+    ? consultingContent.advantages
+    : consultingContentFallback.advantages;
 
-            {/* Преимущества */}
-            <section className="py-12 border-b">
-                <div className="container mx-auto px-4">
-                    <div className="grid md:grid-cols-4 gap-6">
-                        {advantages.map((item, index) => (
-                            <div key={index} className="text-center">
-                                <div className="font-bold text-slate-900 mb-1">{item.title}</div>
-                                <div className="text-sm text-slate-600">{item.description}</div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </section>
+  return (
+    <div className="min-h-screen bg-white">
+      <Helmet>
+        <title>{consultingContent.seoTitle || consultingContentFallback.seoTitle}</title>
+        <meta
+          name="description"
+          content={consultingContent.seoDescription || consultingContentFallback.seoDescription}
+        />
+      </Helmet>
 
-            {/* Услуги */}
-            <section className="container mx-auto px-4 py-16">
-                <h2 className="text-4xl font-bold text-center mb-4">Услуги консалтинга</h2>
-                <p className="text-center text-slate-600 mb-12 max-w-3xl mx-auto">
-                    Решаем бюрократические и технические задачи для вашего объекта: от проверки проектов до получения актов РТН
-                </p>
-                
-                <div className="grid md:grid-cols-2 gap-8">
-                    {services.map((service, index) => {
-                        const Icon = service.icon;
-                        return (
-                            <motion.div
-                                key={index}
-                                initial={{ opacity: 0, y: 20 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }}
-                                transition={{ delay: index * 0.05 }}
-                                className="bg-white border-2 border-slate-100 rounded-2xl p-6 hover:border-green-300 hover:shadow-xl transition-all"
-                            >
-                                <div className="w-14 h-14 bg-green-50 rounded-xl flex items-center justify-center mb-4">
-                                    <Icon className="w-7 h-7 text-green-600" />
-                                </div>
-                                <h3 className="text-xl font-bold mb-3">{service.title}</h3>
-                                <p className="text-slate-600 text-sm mb-4">{service.description}</p>
-                                
-                                <ul className="custom-list text-sm text-slate-600 mb-4">
-                                    {service.details.map((detail, i) => (
-                                        <li key={i}>{detail}</li>
-                                    ))}
-                                </ul>
-                                
-                                <div className="pt-4 border-t border-slate-100">
-                                    <span className="text-orange-600 font-bold">{service.price}</span>
-                                </div>
-                            </motion.div>
-                        );
-                    })}
-                </div>
-            </section>
-
-            {/* CTA */}
-            <section className="bg-slate-50 py-16">
-                <div className="container mx-auto px-4 text-center">
-                    <h2 className="text-3xl font-bold mb-4">Нужна консультация по вашему объекту?</h2>
-                    <p className="text-slate-600 mb-8 max-w-2xl mx-auto">
-                        Оставьте заявку, и наш эксперт свяжется с вами в течение часа для обсуждения задачи.
-                    </p>
-                    <Link to={createPageUrl('Contacts')}>
-                        <button className="bg-orange-600 hover:bg-orange-700 text-white px-10 py-4 rounded-xl font-bold text-lg transition-all shadow-lg">
-                            Связаться с экспертом
-                        </button>
-                    </Link>
-                </div>
-            </section>
+      <section className="bg-slate-900 py-20 text-white">
+        <div className="container mx-auto px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="max-w-4xl"
+          >
+            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-green-500/30 bg-green-600/20 px-4 py-1.5">
+              <FileText className="h-4 w-4 text-green-400" />
+              <span className="text-sm font-bold text-green-400">
+                {consultingContent.badgeLabel || consultingContentFallback.badgeLabel}
+              </span>
+            </div>
+            <h1 className="mb-6 text-4xl font-bold sm:text-5xl">
+              {consultingContent.pageTitle || consultingContentFallback.pageTitle}
+            </h1>
+            <p className="mb-8 text-lg text-slate-300 sm:text-xl">
+              {consultingContent.pageSubtitle || consultingContentFallback.pageSubtitle}
+            </p>
+            <Link to={createPageUrl('Contacts')}>
+              <button className="rounded-xl bg-orange-600 px-8 py-4 text-lg font-bold text-white transition-all hover:bg-orange-700">
+                {consultingContent.ctaButtonLabel || consultingContentFallback.ctaButtonLabel}
+              </button>
+            </Link>
+          </motion.div>
         </div>
-    );
+      </section>
+
+      <section className="border-b py-12">
+        <div className="container mx-auto px-4">
+          <div className="grid gap-6 md:grid-cols-4">
+            {advantages.map((item, index) => (
+              <div key={`${item.title}-${index}`} className="text-center">
+                <div className="mb-1 font-bold text-slate-900">{item.title}</div>
+                <div className="text-sm text-slate-600">{item.description}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="container mx-auto px-4 py-16">
+        <h2 className="mb-4 text-center text-4xl font-bold">Услуги консалтинга</h2>
+        <p className="mx-auto mb-12 max-w-3xl text-center text-slate-600">
+          Решаем технические и организационные задачи для вашего объекта: от проверки проектов
+          до подготовки к сдаче и снижению энергозатрат.
+        </p>
+
+        <div className="grid gap-8 md:grid-cols-2">
+          {services.map((service, index) => {
+            const Icon = iconMap[service.icon] || FileText;
+
+            return (
+              <motion.div
+                key={`${service.title}-${index}`}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.05 }}
+                className="rounded-2xl border-2 border-slate-100 bg-white p-6 transition-all hover:border-green-300 hover:shadow-xl"
+              >
+                <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-xl bg-green-50">
+                  <Icon className="h-7 w-7 text-green-600" />
+                </div>
+                <h3 className="mb-3 text-xl font-bold">{service.title}</h3>
+                <p className="mb-4 text-sm text-slate-600">{service.description}</p>
+
+                <ul className="custom-list mb-4 text-sm text-slate-600">
+                  {(service.details || []).map((detail, detailIndex) => (
+                    <li key={`${service.title}-detail-${detailIndex}`}>{detail}</li>
+                  ))}
+                </ul>
+
+                <div className="border-t border-slate-100 pt-4">
+                  <span className="font-bold text-orange-600">{service.price}</span>
+                </div>
+              </motion.div>
+            );
+          })}
+        </div>
+      </section>
+
+      <section className="bg-slate-50 py-16">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="mb-4 text-3xl font-bold">
+            {consultingContent.ctaTitle || consultingContentFallback.ctaTitle}
+          </h2>
+          <p className="mx-auto mb-8 max-w-2xl text-slate-600">
+            {consultingContent.ctaText || consultingContentFallback.ctaText}
+          </p>
+          <Link to={createPageUrl('Contacts')}>
+            <button className="rounded-xl bg-orange-600 px-10 py-4 text-lg font-bold text-white shadow-lg transition-all hover:bg-orange-700">
+              {consultingContent.ctaBottomButtonLabel || consultingContentFallback.ctaBottomButtonLabel}
+            </button>
+          </Link>
+        </div>
+      </section>
+    </div>
+  );
 }

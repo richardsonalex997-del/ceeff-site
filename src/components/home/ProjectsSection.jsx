@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { MapPin, Calendar, Zap } from 'lucide-react';
+import { MapPin, Calendar } from 'lucide-react';
 import { Badge } from "@/components/ui/badge";
 
 const projects = [
@@ -73,6 +73,8 @@ export default function ProjectsSection() {
                                     <img 
                                         src={project.image} 
                                         alt={project.title}
+                                        loading="lazy"
+                                        decoding="async"
                                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                                     />
                                     <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/50 to-transparent" />

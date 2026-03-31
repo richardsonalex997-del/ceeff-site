@@ -11,12 +11,6 @@ const clientTypes = [
     { icon: Warehouse, name: 'Логистические комплексы', count: '10+' },
 ];
 
-const partners = [
-    { name: 'Россети', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Rosseti_logo.svg/200px-Rosseti_logo.svg.png' },
-    { name: 'МОЭСК', logo: 'https://upload.wikimedia.org/wikipedia/ru/thumb/4/4e/MOESK_logo.svg/200px-MOESK_logo.svg.png' },
-    { name: 'Ростехнадзор', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Rostechnadzor.svg/200px-Rostechnadzor.svg.png' },
-];
-
 export default function PartnersSection() {
     return (
         <section className="py-20 bg-white">
@@ -37,7 +31,6 @@ export default function PartnersSection() {
                     </p>
                 </motion.div>
 
-                {/* Client Types */}
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-16">
                     {clientTypes.map((type, index) => (
                         <motion.div
@@ -57,7 +50,6 @@ export default function PartnersSection() {
                     ))}
                 </div>
 
-                {/* Trust indicators */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
@@ -70,9 +62,7 @@ export default function PartnersSection() {
                                 Работаем с ведущими энергетическими компаниями
                             </h3>
                             <p className="text-slate-300 mb-6">
-                                Наша электролаборатория аккредитована и имеет все необходимые допуски 
-                                для работы на объектах повышенной опасности. Протоколы испытаний 
-                                принимаются всеми надзорными органами.
+                                Наша электролаборатория аккредитована и имеет все необходимые допуски для работы на объектах повышенной опасности. Протоколы испытаний принимаются всеми надзорными органами.
                             </p>
                             <div className="flex flex-wrap gap-4">
                                 <div className="bg-white/10 rounded-lg px-4 py-2">

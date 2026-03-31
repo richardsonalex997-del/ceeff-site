@@ -47,19 +47,20 @@
  *
  * The mainPage value must match a key in the PAGES object exactly.
  */
-import About from './pages/About';
-import Blog from './pages/Blog';
-import Consulting from './pages/Consulting';
-import Contacts from './pages/Contacts';
-import FAQ from './pages/FAQ';
-import Home from './pages/Home';
-import Licenses from './pages/Licenses';
-import Maintenance from './pages/Maintenance';
-import Price from './pages/Price';
-import Privacy from './pages/Privacy';
-import Projects from './pages/Projects';
-import Reviews from './pages/Reviews';
-import Services from './pages/Services';
+import React from 'react';
+const About = React.lazy(() => import('./pages/About'));
+const Blog = React.lazy(() => import('./pages/Blog'));
+const Consulting = React.lazy(() => import('./pages/Consulting'));
+const Contacts = React.lazy(() => import('./pages/Contacts'));
+const FAQ = React.lazy(() => import('./pages/FAQ'));
+const Home = React.lazy(() => import('./pages/Home'));
+const Licenses = React.lazy(() => import('./pages/Licenses'));
+const Maintenance = React.lazy(() => import('./pages/Maintenance'));
+const Price = React.lazy(() => import('./pages/Price'));
+const Privacy = React.lazy(() => import('./pages/Privacy'));
+const Projects = React.lazy(() => import('./pages/Projects'));
+const Reviews = React.lazy(() => import('./pages/Reviews'));
+const Services = React.lazy(() => import('./pages/Services'));
 import __Layout from './Layout.jsx';
 
 

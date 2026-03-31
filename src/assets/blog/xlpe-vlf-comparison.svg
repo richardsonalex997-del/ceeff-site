@@ -1,0 +1,101 @@
+<svg width="1600" height="900" viewBox="0 0 1600 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1600" height="900" rx="36" fill="#F5F8FC"/>
+  <rect x="24" y="24" width="1552" height="852" rx="28" fill="white" stroke="#D8E2EE" stroke-width="4"/>
+  <line x1="800" y1="120" x2="800" y2="792" stroke="#D7E3EF" stroke-width="6" stroke-dasharray="20 18"/>
+  <circle cx="800" cy="92" r="54" fill="#EAF1F8" stroke="#C8D8E8" stroke-width="4"/>
+  <rect x="770" y="60" width="60" height="64" rx="10" fill="none" stroke="#7E90A3" stroke-width="6"/>
+  <path d="M798 76L784 102H800L792 126L816 94H800L808 76H798Z" fill="#7E90A3"/>
+  <rect x="824" y="74" width="20" height="10" rx="3" fill="#7E90A3"/>
+  <rect x="824" y="92" width="20" height="10" rx="3" fill="#7E90A3"/>
+  <rect x="824" y="110" width="20" height="10" rx="3" fill="#7E90A3"/>
+
+  <text x="400" y="180" text-anchor="middle" fill="#D12E2E" font-size="54" font-family="Arial, sans-serif" font-weight="700">НЕДОПУСТИМО!</text>
+  <text x="400" y="230" text-anchor="middle" fill="#131A24" font-size="36" font-family="Arial, sans-serif" font-weight="700">Испытание постоянным током</text>
+
+  <text x="1200" y="180" text-anchor="middle" fill="#2FA84F" font-size="54" font-family="Arial, sans-serif" font-weight="700">РЕКОМЕНДУЕТСЯ!</text>
+  <text x="1200" y="230" text-anchor="middle" fill="#131A24" font-size="36" font-family="Arial, sans-serif" font-weight="700">Испытание СНЧ (VLF)</text>
+
+  <circle cx="980" cy="160" r="30" fill="white" stroke="#2FA84F" stroke-width="6"/>
+  <path d="M965 160L978 173L1000 147" stroke="#2FA84F" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <g transform="translate(110,310)">
+    <ellipse cx="94" cy="98" rx="92" ry="94" fill="#2D77BD"/>
+    <ellipse cx="94" cy="98" rx="76" ry="76" fill="#4A9AE0"/>
+    <ellipse cx="94" cy="98" rx="56" ry="56" fill="#2D77BD"/>
+    <text x="56" y="115" fill="white" font-size="34" font-family="Arial, sans-serif" font-weight="700">XLPE</text>
+    <rect x="92" y="18" width="260" height="160" rx="80" fill="#EEF4F9" stroke="#183B63" stroke-width="4"/>
+    <rect x="264" y="64" width="118" height="66" rx="33" fill="#C7D1DA" stroke="#7C8792" stroke-width="4"/>
+    <path d="M156 78C170 58 194 60 208 78" stroke="#243D5A" stroke-width="5" stroke-linecap="round"/>
+    <path d="M176 112C188 88 228 92 238 122" stroke="#243D5A" stroke-width="5" stroke-linecap="round"/>
+    <path d="M138 126C158 110 194 114 208 144" stroke="#243D5A" stroke-width="5" stroke-linecap="round"/>
+    <path d="M228 72C246 82 250 102 238 118" stroke="#243D5A" stroke-width="5" stroke-linecap="round"/>
+    <path d="M250 104C274 104 286 122 282 142" stroke="#243D5A" stroke-width="5" stroke-linecap="round"/>
+    <path d="M298 126C312 136 320 150 318 168" stroke="#7FC6F6" stroke-width="9" stroke-linecap="round"/>
+    <path d="M310 126C320 146 336 154 344 172" stroke="#7FC6F6" stroke-width="9" stroke-linecap="round"/>
+    <text x="110" y="230" fill="#2B3139" font-size="24" font-family="Arial, sans-serif">образование</text>
+    <text x="100" y="258" fill="#2B3139" font-size="24" font-family="Arial, sans-serif">водных триингов</text>
+  </g>
+
+  <g transform="translate(880,310)">
+    <ellipse cx="94" cy="98" rx="92" ry="94" fill="#2D77BD"/>
+    <ellipse cx="94" cy="98" rx="76" ry="76" fill="#4A9AE0"/>
+    <ellipse cx="94" cy="98" rx="56" ry="56" fill="#2D77BD"/>
+    <text x="56" y="115" fill="white" font-size="34" font-family="Arial, sans-serif" font-weight="700">XLPE</text>
+    <rect x="92" y="18" width="260" height="160" rx="80" fill="#EEF4F9" stroke="#183B63" stroke-width="4"/>
+    <rect x="264" y="64" width="118" height="66" rx="33" fill="#C7D1DA" stroke="#7C8792" stroke-width="4"/>
+    <text x="122" y="230" fill="#2B3139" font-size="24" font-family="Arial, sans-serif">сохранение</text>
+    <text x="88" y="258" fill="#2B3139" font-size="24" font-family="Arial, sans-serif">целостности изоляции</text>
+  </g>
+
+  <g transform="translate(515,390)">
+    <path d="M0 42H82" stroke="#D53737" stroke-width="16" stroke-linecap="round"/>
+    <path d="M68 10L118 42L68 74" fill="#F04949"/>
+    <rect x="150" y="0" width="110" height="82" rx="10" fill="#EDF3F8" stroke="#28456A" stroke-width="5"/>
+    <path d="M188 20V36" stroke="#28456A" stroke-width="6" stroke-linecap="round"/>
+    <path d="M218 20V36" stroke="#28456A" stroke-width="6" stroke-linecap="round"/>
+    <path d="M176 28H200" stroke="#28456A" stroke-width="6" stroke-linecap="round"/>
+    <path d="M226 28H248" stroke="#28456A" stroke-width="6" stroke-linecap="round"/>
+    <path d="M204 24L192 50H208L202 66L224 40H210L216 24H204Z" fill="#1D4370"/>
+    <text x="205" y="116" text-anchor="middle" fill="#20252C" font-size="28" font-family="Arial, sans-serif" font-weight="700">ПОСТОЯННОЕ</text>
+    <text x="205" y="148" text-anchor="middle" fill="#20252C" font-size="28" font-family="Arial, sans-serif" font-weight="700">НАПРЯЖЕНИЕ</text>
+  </g>
+
+  <g transform="translate(1090,390)">
+    <path d="M0 42H82" stroke="#2FA84F" stroke-width="16" stroke-linecap="round"/>
+    <path d="M68 10L118 42L68 74" fill="#39B95B"/>
+    <rect x="150" y="0" width="110" height="82" rx="10" fill="#EDF3F8" stroke="#28456A" stroke-width="5"/>
+    <path d="M188 20V36" stroke="#28456A" stroke-width="6" stroke-linecap="round"/>
+    <path d="M218 20V36" stroke="#28456A" stroke-width="6" stroke-linecap="round"/>
+    <path d="M176 28H200" stroke="#28456A" stroke-width="6" stroke-linecap="round"/>
+    <path d="M226 28H248" stroke="#28456A" stroke-width="6" stroke-linecap="round"/>
+    <path d="M204 24L192 50H208L202 66L224 40H210L216 24H204Z" fill="#1D4370"/>
+    <text x="205" y="116" text-anchor="middle" fill="#20252C" font-size="28" font-family="Arial, sans-serif" font-weight="700">СВЕРХНИЗКАЯ</text>
+    <text x="205" y="148" text-anchor="middle" fill="#20252C" font-size="28" font-family="Arial, sans-serif" font-weight="700">ЧАСТОТА (0,1 Гц)</text>
+  </g>
+
+  <g transform="translate(88,650)">
+    <line x1="0" y1="112" x2="334" y2="112" stroke="#23486D" stroke-width="4"/>
+    <line x1="0" y1="112" x2="0" y2="10" stroke="#23486D" stroke-width="4"/>
+    <line x1="0" y1="112" x2="0" y2="122" stroke="#23486D" stroke-width="4"/>
+    <line x1="0" y1="112" x2="334" y2="112" stroke="#2D77BD" stroke-width="5"/>
+  </g>
+
+  <g transform="translate(255,675)">
+    <rect x="0" y="0" width="140" height="70" rx="34" fill="#E8EEF4" stroke="#74818C" stroke-width="4"/>
+    <rect x="96" y="17" width="76" height="36" rx="18" fill="#C7D1DA" stroke="#7C8792" stroke-width="4"/>
+    <path d="M34 18C52 16 68 22 76 34C84 48 78 60 62 66" stroke="#3D4E61" stroke-width="4" stroke-linecap="round"/>
+    <path d="M78 14L56 34L86 44L74 62" stroke="#1E4A79" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="206" y="24" fill="#2B3139" font-size="24" font-family="Arial, sans-serif">Ускоренное</text>
+    <text x="186" y="52" fill="#2B3139" font-size="24" font-family="Arial, sans-serif">старение изоляции</text>
+  </g>
+
+  <g transform="translate(910,640)">
+    <line x1="0" y1="130" x2="556" y2="130" stroke="#23486D" stroke-width="4"/>
+    <line x1="0" y1="130" x2="0" y2="18" stroke="#23486D" stroke-width="4"/>
+    <path d="M556 130L536 118V142L556 130Z" fill="#23486D"/>
+    <line x1="0" y1="60" x2="556" y2="60" stroke="#BCC9D7" stroke-width="3" stroke-dasharray="10 10"/>
+    <line x1="0" y1="200" x2="556" y2="200" stroke="#BCC9D7" stroke-width="3" stroke-dasharray="10 10"/>
+    <path d="M0 130C38 130 57 60 93 60C129 60 148 200 185 200C222 200 240 60 278 60C316 60 335 200 371 200C407 200 426 60 463 60C500 60 519 130 556 130" stroke="#2D77BD" stroke-width="6" fill="none"/>
+    <text x="278" y="22" text-anchor="middle" fill="#131A24" font-size="30" font-family="Arial, sans-serif" font-weight="700">СИНУСОИДАЛЬНОЕ НАПРЯЖЕНИЕ 0,1 Гц</text>
+  </g>
+</svg>

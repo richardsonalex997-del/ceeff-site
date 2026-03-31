@@ -1,48 +1,39 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Calendar, Clock, ArrowRight, Tag } from 'lucide-react';
+import { Calendar, Clock, ArrowRight } from 'lucide-react';
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import xlpeVlfImage from '@/assets/blog/xlpe-vlf-photo-optimized.jpg';
 
 const articles = [
     {
+        id: 5,
+        title: 'Сшитый полиэтилен (СПЭ): почему его нельзя испытывать «по старинке»?',
+        excerpt: 'Разбираем, почему кабели XLPE нельзя испытывать постоянным током и зачем нужен щадящий метод СНЧ (VLF) 0,1 Гц.',
+        image: xlpeVlfImage,
+        category: 'Технологии',
+        date: '23 марта 2026',
+        readTime: '6 мин',
+        featured: true
+    },
+    {
         id: 1,
         title: 'Новые требования к испытаниям электрооборудования в 2024 году',
-        excerpt: 'Обзор изменений в нормативной базе и их влияние на периодичность и объём испытаний силового оборудования.',
-        image: 'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=800&auto=format&fit=crop',
+        excerpt: 'Обзор изменений в нормативной базе и их влияние на периодичность и объем испытаний силового оборудования.',
+        image: 'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=640&q=75&auto=format&fit=crop',
         category: 'Нормативы',
         date: '15 января 2024',
         readTime: '5 мин',
-        featured: true
+        featured: false
     },
     {
         id: 2,
         title: 'Как выбрать подрядчика для обслуживания трансформаторной подстанции',
-        excerpt: 'Критерии выбора надёжной компании: лицензии, опыт, оборудование, гарантии и отзывы клиентов.',
-        image: 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&auto=format&fit=crop',
+        excerpt: 'Критерии выбора надежной компании: лицензии, опыт, оборудование, гарантии и отзывы клиентов.',
+        image: 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=640&q=75&auto=format&fit=crop',
         category: 'Советы',
         date: '10 января 2024',
         readTime: '7 мин',
-        featured: false
-    },
-    {
-        id: 3,
-        title: 'Модернизация систем релейной защиты: когда это необходимо',
-        excerpt: 'Признаки устаревания РЗА, преимущества микропроцессорной защиты и этапы модернизации.',
-        image: 'https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=800&auto=format&fit=crop',
-        category: 'Технологии',
-        date: '5 января 2024',
-        readTime: '6 мин',
-        featured: false
-    },
-    {
-        id: 4,
-        title: 'Молниезащита промышленных объектов: комплексный подход',
-        excerpt: 'Современные методы защиты от прямых ударов молнии и вторичных воздействий на электрооборудование.',
-        image: 'https://images.unsplash.com/photo-1509390836518-e0c85c2e3188?w=800&auto=format&fit=crop',
-        category: 'Обзоры',
-        date: '28 декабря 2023',
-        readTime: '8 мин',
         featured: false
     }
 ];
@@ -55,8 +46,8 @@ const categoryColors = {
 };
 
 export default function BlogSection() {
-    const featuredArticle = articles.find(a => a.featured);
-    const otherArticles = articles.filter(a => !a.featured);
+    const featuredArticle = articles.find((article) => article.featured);
+    const otherArticles = articles.filter((article) => !article.featured);
 
     return (
         <section className="py-20 bg-slate-50">
@@ -84,7 +75,6 @@ export default function BlogSection() {
                 </motion.div>
 
                 <div className="grid lg:grid-cols-2 gap-8">
-                    {/* Featured Article */}
                     {featuredArticle && (
                         <motion.div
                             initial={{ opacity: 0, x: -30 }}
@@ -95,9 +85,11 @@ export default function BlogSection() {
                         >
                             <div className="bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 h-full">
                                 <div className="relative h-72 overflow-hidden">
-                                    <img 
-                                        src={featuredArticle.image} 
+                                    <img
+                                        src={featuredArticle.image}
                                         alt={featuredArticle.title}
+                                        loading="lazy"
+                                        decoding="async"
                                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                                     />
                                     <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 to-transparent" />
@@ -132,7 +124,6 @@ export default function BlogSection() {
                         </motion.div>
                     )}
 
-                    {/* Other Articles */}
                     <div className="space-y-6">
                         {otherArticles.map((article, index) => (
                             <motion.div
@@ -145,9 +136,11 @@ export default function BlogSection() {
                             >
                                 <div className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 flex">
                                     <div className="w-1/3 min-w-[140px] relative overflow-hidden">
-                                        <img 
-                                            src={article.image} 
+                                        <img
+                                            src={article.image}
                                             alt={article.title}
+                                            loading="lazy"
+                                            decoding="async"
                                             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                                         />
                                     </div>
